@@ -1,19 +1,33 @@
 # PassGuard
-# This is a Final Project for the National University CYB333 course and is very simple. 
 
-# Objective
+import re
 
-# PassGuard is a Python-based tool designed to assess the security of user’s passwords. This tool aims to enhance overall security by identifying weak passwords and providing users with actionable recommendations to strengthen passwords. 
- 
-# Features:
+def assess_password_strength(password):
+    # Criteria for password strength
+    length_criteria = 8
+    complexity_criteria = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$')
 
-# 1.	Password Strength Assessment i.	Evaluate the strength of a given password based on specific criteria.
-# 2.	User-Friendly i. Develop a straightforward CLI that is easy for intermediate coders to navigate.
-# 3.	Educational Recommendations i.	Offer tips and explanations on why certain passwords are considered strong or weak. ii.	Provide suggestions for creating strong passwords.
+    # Assess length
+    length_ok = len(password) >= length_criteria
+    # Assess complexity
+    complexity_ok = bool(complexity_criteria.match(password))
 
-# Deliverables:
+    return length_ok and complexity_ok
 
-# 1.	Password Strength Checker Tool i.	Python script with user-friendly CLI. ii. Basic documentation about how to run the tool.
-# 2.	 Educational Content i.	In-tool tips and explanations on password security. ii.	Short guide that explains creating strong passwords.
+def password_strength_checker(password):
+    strength = assess_password_strength(password)
 
- 
+    # Display results without colorization
+    print(f"Password: {password}")
+    print("Strength:", "Strong" if strength else "Weak")
+
+    if not strength:
+        print("Recommendations:")
+        print("- Aim for at least 8 characters.")
+        print("- Include a mix of uppercase, lowercase, and numbers.")
+        print("- Avoid common words and patterns.")
+
+if __name__ == "__main__":
+    # Example usage
+    user_password = input("Enter your password: ")
+    password_strength_checker(user_password)
